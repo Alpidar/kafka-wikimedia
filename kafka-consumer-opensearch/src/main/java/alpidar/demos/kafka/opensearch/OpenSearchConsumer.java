@@ -129,7 +129,7 @@ public class OpenSearchConsumer {
     }
 
     private static KafkaConsumer<String, String> createKafkaConsumer() {
-        String boostrapServers = "192.168.85.46:9092";
+        String boostrapServers = "127.0.0.1:9092";
         String groupId = "consumer-opensearch-demo";
 
         // create consumer configs

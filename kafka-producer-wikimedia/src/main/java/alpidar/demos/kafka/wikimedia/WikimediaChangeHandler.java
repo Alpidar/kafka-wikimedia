@@ -19,7 +19,7 @@ public class WikimediaChangeHandler implements EventHandler {
 
     public WikimediaChangeHandler(String topic) {
         Properties prop = new Properties();
-        prop.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.85.46:9092");
+        prop.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         prop.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         prop.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         prop.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20");
