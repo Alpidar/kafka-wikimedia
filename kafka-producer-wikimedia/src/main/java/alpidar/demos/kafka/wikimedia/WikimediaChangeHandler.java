@@ -22,6 +22,9 @@ public class WikimediaChangeHandler implements EventHandler {
         prop.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.85.46:9092");
         prop.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         prop.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        prop.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20");
+        prop.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, 32 * 1024 + "");
+        prop.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
         this.producer = new KafkaProducer<>(prop);
         this.topic = topic;
     }
