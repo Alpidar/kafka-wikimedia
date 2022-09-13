@@ -11,6 +11,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.opensearch.action.bulk.BulkRequest;
 import org.opensearch.action.index.IndexRequest;
@@ -65,8 +66,8 @@ public class OpenSearchConsumer {
 
             BulkRequest bulkRequest = new BulkRequest();
 
-            int i = 20;
-            while(i > 0){
+
+            while (true) {
                 // consume the data
                 ConsumerRecords<String, String> consumerRecords = consumer.poll(Duration.ofMillis(3000));
                 log.info("Received " + consumerRecords.count() + " records");
@@ -76,7 +77,7 @@ public class OpenSearchConsumer {
                     IndexRequest indexRequest = new IndexRequest("wikimedia").source(record.value(), XContentType.JSON).id(id);
                     bulkRequest.add(indexRequest);
                 }
-                if(bulkRequest.numberOfActions() > 0){
+                if (bulkRequest.numberOfActions() > 0) {
 
                     openSearchClient.bulk(bulkRequest, RequestOptions.DEFAULT);
 
@@ -85,12 +86,13 @@ public class OpenSearchConsumer {
                     consumer.commitSync();
                     log.info("Offsets have been committed");
                 }
-                i--;
 
             }
 
+        } catch (WakeupException e) {
+            log.info("Received wakeup exception");
         } catch (Exception e) {
-            log.error(e.getMessage());
+            e.printStackTrace();
         }
     }
 
